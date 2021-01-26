@@ -3,7 +3,7 @@
     "allowSyntheticDefaultImports": true,
     "baseUrl": ".",
     "outDir": "dist",
-    "lib": ["ES2019"],
+    "lib": ["ES2019", "dom"],
     "target": "ES2019",
     "module": "commonjs",
     "moduleResolution": "node",
@@ -11,7 +11,7 @@
     "sourceMap": true,
     "resolveJsonModule": true,
     "declaration": true,
-    "noUnusedLocals": true
+    "noUnusedLocals": true,
   },
   "include": ["src/**/*.ts"]
 }
