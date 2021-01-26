@@ -19,48 +19,6 @@ export class FacebookAutomation {
   }
 
   /**
-   * @description Creates a browser and a page instance.
-   * @returns {Promise<IBrowserAndPage>}
-   */
-  async createBrowserAndPage(): Promise<IBrowserAndPage> {
-    const browser = await chromium.launch({ headless: false, slowMo: 50 });
-    const context = await browser.newContext({ permissions: ['camera', 'microphone'] });
-    const page = await context.newPage();
-
-    return {
-      browser,
-      page,
-    };
-  }
-
-  /**
-   * @description Authenticate user from given credentials.
-   * @returns {Promise<IBrowserAndPage>}
-   */
-  private async authenticate(): Promise<IBrowserAndPage> {
-    const { page, browser }: IBrowserAndPage = await this.createBrowserAndPage();
-
-    await page.goto(defaultConfig.urls.authentication);
-    await page.setViewportSize({ width: 2389, height: 880 });
-
-    await page.waitForSelector('div #u_0_h');
-    await page.click('div #u_0_h', { delay: 4000 });
-
-    await page.waitForSelector('#email');
-    await page.fill('#email', this.config.credentials.login);
-
-    await page.waitForSelector('#globalContainer > #content > div > ._8esj > ._8esk');
-    await page.click('#globalContainer > #content > div > ._8esj > ._8esk');
-
-    await page.waitForSelector('#pass');
-    await page.fill('#pass', this.config.credentials.password);
-
-    await page.keyboard.press('Enter');
-
-    return { page, browser };
-  }
-
-  /**
    * @description Post on the Facebook page.
    * @param {IPost} data
    * @returns {Promise<void>}
@@ -101,11 +59,53 @@ export class FacebookAutomation {
   }
 
   /**
+   * @description Creates a browser and a page instance.
+   * @returns {Promise<IBrowserAndPage>}
+   */
+  private async createBrowserAndPage(): Promise<IBrowserAndPage> {
+    const browser = await chromium.launch({ headless: false, slowMo: 50 });
+    const context = await browser.newContext({ permissions: ['camera', 'microphone'] });
+    const page = await context.newPage();
+
+    return {
+      browser,
+      page,
+    };
+  }
+
+  /**
+   * @description Authenticate user from given credentials.
+   * @returns {Promise<IBrowserAndPage>}
+   */
+  private async authenticate(): Promise<IBrowserAndPage> {
+    const { page, browser }: IBrowserAndPage = await this.createBrowserAndPage();
+
+    await page.goto(defaultConfig.urls.authentication);
+    await page.setViewportSize({ width: 2389, height: 880 });
+
+    await page.waitForSelector('div #u_0_h');
+    await page.click('div #u_0_h', { delay: 4000 });
+
+    await page.waitForSelector('#email');
+    await page.fill('#email', this.config.credentials.login);
+
+    await page.waitForSelector('#globalContainer > #content > div > ._8esj > ._8esk');
+    await page.click('#globalContainer > #content > div > ._8esj > ._8esk');
+
+    await page.waitForSelector('#pass');
+    await page.fill('#pass', this.config.credentials.password);
+
+    await page.keyboard.press('Enter');
+
+    return { page, browser };
+  }
+
+  /**
    * @description Close browser.
    * @param {Browser} browser
    * @returns {Promise<void>}
    */
-  async close(browser: Browser): Promise<void> {
+  private async close(browser: Browser): Promise<void> {
     return browser.close();
   }
 }
