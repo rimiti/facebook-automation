@@ -8,7 +8,7 @@ import { defaultConfig } from '../config';
 export class FacebookAutomation {
   private config: IConstructor;
 
-  private static SLEEP_10S = 10000;
+  private static WAIT_IN_MS = 15000;
 
   /**
    * @description Constructor.
@@ -47,13 +47,13 @@ export class FacebookAutomation {
       const input = await photoParentParent.$('input[type=file]');
       await input.setInputFiles(data.imagePath);
 
-      await page.waitForTimeout(FacebookAutomation.SLEEP_10S);
+      await page.waitForTimeout(FacebookAutomation.WAIT_IN_MS);
     }
 
     // Submit the post
     await page.click('[aria-label="Post"]');
 
-    await page.waitForTimeout(FacebookAutomation.SLEEP_10S);
+    await page.waitForTimeout(FacebookAutomation.WAIT_IN_MS);
 
     await this.close(browser);
   }
@@ -63,7 +63,7 @@ export class FacebookAutomation {
    * @returns {Promise<IBrowserAndPage>}
    */
   private async createBrowserAndPage(): Promise<IBrowserAndPage> {
-    const browser = await chromium.launch({ headless: false, slowMo: 50 });
+    const browser = await chromium.launch({ headless: this.config.headless || true, slowMo: 50 });
     const context = await browser.newContext({ permissions: ['camera', 'microphone'] });
     const page = await context.newPage();
 
@@ -96,6 +96,8 @@ export class FacebookAutomation {
     await page.fill('#pass', this.config.credentials.password);
 
     await page.keyboard.press('Enter');
+
+    await page.waitForTimeout(FacebookAutomation.WAIT_IN_MS);
 
     return { page, browser };
   }
