@@ -24,7 +24,8 @@ const facebookAutomation: FacebookAutomation = new FacebookAutomation({
     login: 'facebook@dimsolution.com',
     password: '$secr€t',
   },
-  pageUrl: 'https://www.facebook.com/my-page-id'
+  pageUrl: 'https://www.facebook.com/my-page-id',
+  headless: false, // Optional
 });
 
 await facebookAutomation.post({
