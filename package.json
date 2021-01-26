@@ -1,6 +1,6 @@
 {
   "name": "@rimiti/facebook-automation",
-  "version": "0.0.0",
+  "version": "1.0.0",
   "description": "Post on facebook",
   "author": "Dimitri DO BAIRRO <dimitri.dobairro@dimsolution.com>",
   "main": "dist/index.js",
