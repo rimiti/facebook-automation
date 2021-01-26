@@ -8,13 +8,38 @@
 
 ## Description
 
-This repository provides a powerful way to post on Facebook without using any API (based on Playwright). 
+This repository provides a powerful way to post on your Facebook Page without using any API (based on Playwright). 
 
 ## Install
 
-```
+```bash
 yarn add @rimiti/facebook-automation
 ```
+
+## Example
+
+```typescript
+import { FacebookAutomation } from '@rimiti/facebook-automation';
+
+const facebookAutomation: FacebookAutomation = new FacebookAutomation({
+  credentials: {
+    login: 'facebook@dimsolution.com',
+    password: '$secr€t',
+  },
+  pageUrl: 'https://www.facebook.com/my-page-id'
+});
+
+await facebookAutomation.post({
+  text: 'Hello world',
+  imagePath: './example.jpg',
+});
+```
+
+
+### Limitation
+
+- To avoid scrappers (not only), Facebook isn't using "id" elements. It's why some of elements are selected from "text content". Your Facebook account must be in English.
+
 
 ## Scripts
 
