@@ -25,7 +25,7 @@ const facebookAutomation: FacebookAutomation = new FacebookAutomation({
     password: '$secr€t',
   },
   pageUrl: 'https://www.facebook.com/my-page-id',
-  headless: false, // Optional
+  headless: true,
 });
 
 await facebookAutomation.post({
