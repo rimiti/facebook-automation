@@ -63,7 +63,7 @@ export class FacebookAutomation {
    * @returns {Promise<IBrowserAndPage>}
    */
   private async createBrowserAndPage(): Promise<IBrowserAndPage> {
-    const browser = await chromium.launch({ headless: this.config.headless || true, slowMo: 50 });
+    const browser = await chromium.launch({ headless: this.config.headless, slowMo: 50 });
     const context = await browser.newContext({ permissions: ['camera', 'microphone'] });
     const page = await context.newPage();
 
