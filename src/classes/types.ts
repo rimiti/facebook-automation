@@ -6,7 +6,7 @@ interface IConstructor {
     password: string;
   };
   pageUrl: string;
-  headless?: boolean;
+  headless: boolean;
 }
 
 interface IPost {
