@@ -83,19 +83,16 @@ export class FacebookAutomation {
     await page.goto(defaultConfig.urls.authentication);
     await page.setViewportSize({ width: 2389, height: 880 });
 
-    await page.waitForSelector('div #u_0_h');
-    await page.click('div #u_0_h', { delay: 4000 });
+    const cookieBanner = '[data-cookiebanner="accept_button"]';
+
+    await page.waitForSelector(cookieBanner);
+    await page.click(cookieBanner, { delay: 4000 });
 
     await page.waitForSelector('#email');
     await page.fill('#email', this.config.credentials.login);
 
-    await page.waitForSelector('#globalContainer > #content > div > ._8esj > ._8esk');
-    await page.click('#globalContainer > #content > div > ._8esj > ._8esk');
-
-    await page.waitForSelector('#pass');
     await page.fill('#pass', this.config.credentials.password);
-
-    await page.keyboard.press('Enter');
+    await page.keyboard.press('Enter', { delay: 1000 });
 
     await page.waitForTimeout(FacebookAutomation.WAIT_IN_MS);
 
