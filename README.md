@@ -25,13 +25,27 @@ const facebookAutomation: FacebookAutomation = new FacebookAutomation({
     password: '$secr€t',
   },
   pageUrl: 'https://www.facebook.com/my-page-id',
-  headless: true,
+  browserConfiguration: { // Optional
+    headless: false, 
+    args: ['--no-sandbox']
+  } 
 });
 
 await facebookAutomation.post({
   text: 'Hello world',
   imagePath: './example.jpg',
 });
+```
+
+## Default browser configuration
+
+The below default browser configuration can be overridden through **browserConfiguration** constructor attribute.
+
+```typescript
+{
+  headless: true,
+  slowMo: 50,
+}
 ```
 
 
