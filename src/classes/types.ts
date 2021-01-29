@@ -7,7 +7,7 @@ interface IConstructor {
     password: string;
   };
   pageUrl: string;
-  browserConfiguration: LaunchOptions;
+  browserConfiguration?: LaunchOptions;
 }
 
 interface IPost {
