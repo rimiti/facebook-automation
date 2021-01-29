@@ -1,4 +1,5 @@
 import { Page, Browser } from 'playwright';
+import { LaunchOptions } from 'playwright/types/types';
 
 interface IConstructor {
   credentials: {
@@ -6,7 +7,7 @@ interface IConstructor {
     password: string;
   };
   pageUrl: string;
-  headless: boolean;
+  browserConfiguration: LaunchOptions;
 }
 
 interface IPost {
