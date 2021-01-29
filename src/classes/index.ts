@@ -1,6 +1,8 @@
 import { chromium, Browser } from 'playwright';
+import { merge } from 'lodash';
 import { IBrowserAndPage, IConstructor, IPost } from './types';
 import { defaultConfig } from '../config';
+import { LaunchOptions } from 'playwright/types/types';
 
 /**
  * @description FacebookAutomation class.
@@ -63,7 +65,12 @@ export class FacebookAutomation {
    * @returns {Promise<IBrowserAndPage>}
    */
   private async createBrowserAndPage(): Promise<IBrowserAndPage> {
-    const browser = await chromium.launch({ headless: this.config.headless, slowMo: 50 });
+    const launchConfiguration: LaunchOptions = merge(
+      defaultConfig.defaultBrowserConfiguration,
+      this.config.browserConfiguration,
+    );
+
+    const browser = await chromium.launch(launchConfiguration);
     const context = await browser.newContext({ permissions: ['camera', 'microphone'] });
     const page = await context.newPage();
 
