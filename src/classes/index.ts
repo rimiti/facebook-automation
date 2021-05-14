@@ -41,12 +41,10 @@ export class FacebookAutomation {
     await page.keyboard.insertText(data.text);
 
     if (data.imagePath) {
-      const photo = await page.$('[aria-label="Photo/Video"]');
-      const photoParent = (await photo.$$('..'))[0];
-      const photoParentParent = (await photoParent.$$('..'))[0];
+      const photo = await page.$('div[role="dialog"] form[method="POST"]');
 
       // Select an input file
-      const input = await photoParentParent.$('input[type=file]');
+      const input = await photo.$('input[type=file]');
       await input.setInputFiles(data.imagePath);
 
       await page.waitForTimeout(FacebookAutomation.WAIT_IN_MS);
