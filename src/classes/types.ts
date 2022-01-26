@@ -1,5 +1,4 @@
-import { Page, Browser } from 'playwright';
-import { LaunchOptions } from 'playwright/types/types';
+import { Page, Browser, LaunchOptions } from 'playwright';
 
 interface IConstructor {
   credentials: {
