@@ -1,8 +1,7 @@
-import { chromium, Browser } from 'playwright';
+import { chromium, Browser, LaunchOptions } from 'playwright';
 import { merge } from 'lodash';
 import { IBrowserAndPage, IConstructor, IPost } from './types';
 import { defaultConfig } from '../config';
-import { LaunchOptions } from 'playwright/types/types';
 
 /**
  * @description FacebookAutomation class.
@@ -10,7 +9,7 @@ import { LaunchOptions } from 'playwright/types/types';
 export class FacebookAutomation {
   private config: IConstructor;
 
-  private static WAIT_IN_MS = 15000;
+  private static WAIT_IN_MS = 20000;
 
   /**
    * @description Constructor.
@@ -30,7 +29,7 @@ export class FacebookAutomation {
 
     await page.goto(this.config.pageUrl);
 
-    const createPostSelector = '[aria-label="Create Post"]';
+    const createPostSelector = "//*[text()[contains(.,'Create post')]]";
 
     await page.waitForSelector(createPostSelector);
     await page.click(createPostSelector);
@@ -38,24 +37,33 @@ export class FacebookAutomation {
     // Wait on the create post modal"
     await page.waitForSelector('[aria-label="Post"]');
     // Insert directly the text because the focus is already on the input text
+
     await page.keyboard.insertText(data.text);
 
     if (data.imagePath) {
-      const photo = await page.$('div[role="dialog"] form[method="POST"]');
+      const dialogFormSelector = 'div[role="dialog"] form[method="POST"]';
+      const dialogFormPhotoVideoButton = `${dialogFormSelector} div[aria-label="Photo/Video"]`;
+      const dialogFormImageInputSelector = "//*[text()[contains(.,'Add Photos/Videos')]]";
 
-      // Select an input file
-      const input = await photo.$('input[type=file]');
-      await input.setInputFiles(data.imagePath);
+      // Handle upload
+      await page.on('filechooser', async (fileChooser) => {
+        await fileChooser.setFiles(data.imagePath);
+        await page.waitForTimeout(FacebookAutomation.WAIT_IN_MS);
 
-      await page.waitForTimeout(FacebookAutomation.WAIT_IN_MS);
+        // Submit the post
+        await page.click('[aria-label="Post"]');
+        await page.waitForTimeout(FacebookAutomation.WAIT_IN_MS);
+        await this.close(browser);
+      });
+
+      // Click on "add" image or video
+      await page.click(dialogFormPhotoVideoButton);
+      await page.waitForSelector(dialogFormPhotoVideoButton);
+
+      // Click on Add video, to show up input tag
+      await page.click(dialogFormImageInputSelector);
+      await page.waitForSelector(dialogFormImageInputSelector, { state: 'hidden' });
     }
-
-    // Submit the post
-    await page.click('[aria-label="Post"]');
-
-    await page.waitForTimeout(FacebookAutomation.WAIT_IN_MS);
-
-    await this.close(browser);
   }
 
   /**
